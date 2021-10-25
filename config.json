@@ -1,0 +1,161 @@
+{
+  "user_form": {
+    "name": "Jane Doe",
+    "fullname": "Jane Doe",
+    "firstname":"Jane",
+    "lastname": "Doe",
+    "middlename": "Doe",
+    "username": "username",
+    "password": "password",
+    "email": "janedoe@example.com",
+    "phone_number": "8185551234",
+    "phone": "8185551234",
+    "country": "Canada",
+    "state": "Toronto",
+    "city": "Ontario",
+    "province": "Ontario",
+    "zipcode": "M1M1X1",
+    "postcode": "M1M1X1",
+    "pincode": "M1M1X1",
+    "discount_code": "",
+    "coupon_code": "",
+    "taluk": "Ontario",
+    "district": "Ontario",
+    "address": "Canada, Toronto,Ontario,M1M 1X1",
+    "apartment": "Apt 1234",
+    "company": "kttp",
+    "email_address": "janedoe@example.com"
+  },
+  "user_details": {
+    "user name": [
+      "Ravi",
+      "Kiran"
+    ],
+    "first name": [
+      "ravi",
+      "raju"
+    ],
+    "last name": [
+      "kiran",
+      "gowda"
+    ],
+    "phone number": [
+      "12345",
+      "67890"
+    ],
+    "address": [
+      "bangalore",
+      "mysore"
+    ],
+    "email": [
+      "ravikiranb36@gmail.com",
+      "brian@gmail.com"
+    ],
+    "password": [
+      "12345",
+      "23456"
+    ]
+  },
+  "instructions": {
+    "1) Take a screenshot of the homepage without performing any action.": [
+      [
+        "1homepage",
+        "2category",
+        "3SimpleProduct",
+        "3ComplexProduct",
+        "3AddToCartWindow",
+        "4cart",
+        "5checkout",
+        "6shippingMethod",
+        "7billingAddress",
+        "8paymentTypes",
+        "9DiscountCode",
+        "91rememberMe",
+        "92guarantee",
+        "93warranty",
+        "94privacy",
+        "95ssl",
+        "96contact",
+        "97subscribe",
+        "98other"
+      ],
+      "second"
+    ],
+    "2) While still on the homepage hover over to the first category menu item on the navigation. Take a screenshot.": [
+      [
+        "1homepage"
+      ],
+      "second instruction"
+    ],
+    "3) Navigate to any category on the homepage and hover over the name. Take a screenshot.": [
+      [
+        "instruction3prefix1",
+        "instruction3prefix2"
+      ],
+      "second instruction"
+    ],
+    "4) Click through any category on the homepage. Take a screenshot of the new loaded category page.": [
+      [
+        "instruction4prefix1",
+        "instruction4prefix2"
+      ],
+      "second instruction"
+    ],
+    "5) While on the same new category page move the mouse cursor to the First product near the top left area of the page. Hover over the product and take a screenshot.": [
+      [
+        "instruction5prefix1",
+        "instruction5prefix2"
+      ],
+      "second instruction"
+    ],
+    "6) Click through to the product details. Take a screenshot.": [
+      [
+        "instruction6prefix1",
+        "instruction6prefix2"
+      ],
+      "second instruction"
+    ],
+    "7) Hover over to the first available product attribute excluding quantity.Click the product attribute drop-down menu. Take a screenshot.": [
+      [
+        "instruction7prefix1",
+        "instruction7prefix2"
+      ],
+      "second instruction"
+    ],
+    "8) Repeat what you did in step #7 for every subsequent product attribute. Take a screenshot for each one.": [
+      [
+        "instruction8prefix1",
+        "instruction8prefix2"
+      ],
+      "second instruction"
+    ],
+    "9) Hover over the add to cart button. Take a screenshot.": [
+      [
+        "instruction9prefix1",
+        "instruction9prefix2"
+      ],
+      "second instruction"
+    ],
+    "10) Click the add to cart button. Take a screenshot of any interim modal or pop up.": [
+      [
+        "instruction10prefix1",
+        "instruction10prefix2"
+      ],
+      "second instruction"
+    ],
+    "11) Click on the cart button. Take a screenshot.": [
+      [
+        "instruction11prefix1",
+        "instruction11prefix2"
+      ],
+      "second instruction"
+    ],
+    "12) Click on the checkout button. Take a screenshot.": [
+      [
+        "instruction12prefix1",
+        "instruction12prefix2"
+      ],
+      "second instruction"
+    ]
+  }
+}
