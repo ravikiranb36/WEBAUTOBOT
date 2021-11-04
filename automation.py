@@ -7,11 +7,11 @@ import traceback
 from getpass import getuser
 from urllib.parse import urlparse
 
-from selenium import webdriver
-import numpy as np
 import cv2
+import numpy as np
 import pyautogui
 import requests
+from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -120,7 +120,7 @@ class Automation:
             file_full_path = os.path.join(file_path, filename)
             with open(os.path.join(os.curdir, "TSV_Files", f"{domain}.tsv"), "a") as f:
                 f.write(f"{filename}\t{second_instruction}\n")
-            driver.find_element_by_tag_name('body').screenshot(file_full_path)
+            driver.find_element(By.TAG_NAME, 'body').screenshot(file_full_path)
             shutil.copyfile(file_full_path, os.path.join(os.curdir, "All_ScreenShots", filename))
             driver.quit()
         except Exception as e:
@@ -300,14 +300,13 @@ class Automation:
         except Exception as e:
             print(f"Error: {e}")
 
-    def fill_form_automatically(self, window, stop_record_button):
-        user_form = self.config["user_form"]
+    def fill_form_automatically(self, window, user_form, stop_record_button):
         user_form_keys = user_form.keys()
-        forms = self.driver.find_elements_by_tag_name("form")
+        forms = self.driver.find_elements(By.TAG_NAME, "form")
 
         for form in forms:
-            inputs = form.find_elements_by_tag_name("input")
-            drop_downs = form.find_elements_by_tag_name("select")
+            inputs = form.find_elements(By.TAG_NAME, "input")
+            drop_downs = form.find_elements(By.TAG_NAME, "select")
             for drop_down in drop_downs:
                 id = drop_down.get_attribute("id")
                 # input_class = drop_down.get_attribute("class")
@@ -363,11 +362,10 @@ class Automation:
                                 inp.clear()
                                 for ch in data_to_fill:
                                     inp.send_keys(ch)
-                                    time.sleep(0.01)
+                                    time.sleep(0.03)
                                 # print(information, assumed)
                                 time.sleep(0.5)
                             except Exception as e:
                                 print(f"Error: {e}")
                             break
-
         window.stop_record()

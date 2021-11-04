@@ -1,5 +1,4 @@
 import json
-import shutil
 import sys
 import time
 from threading import Thread
@@ -11,7 +10,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QShortcut
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QComboBox, QHBoxLayout, QVBoxLayout,
                                QWidget, QFormLayout, QCompleter, QPushButton, QPlainTextEdit, QSpinBox, QMessageBox,
-                               QStatusBar, QRadioButton, QCheckBox)
+                               QStatusBar, QCheckBox)
 
 from automation import Automation
 
@@ -57,7 +56,6 @@ class BotWindow(QWidget):
         """
         self.instructuns_index = 0
         self.websites_index = 0
-        self.can_enable_next_button = True
         self.non_scrollable_actions_list = []
         self.user_details = []
         try:
@@ -83,7 +81,7 @@ class BotWindow(QWidget):
         self.show()
 
     def create_widgets(self):
-        self.setFixedSize(400, 500)
+        self.setFixedSize(500, 650)
         self.form_layout = QFormLayout()
 
         self.run_name = QLineEdit()
@@ -168,12 +166,16 @@ class BotWindow(QWidget):
         self.main_layout.addLayout(self.action_record_hbox_layout2)
 
         self.action_hbox_layout = QHBoxLayout()
+        self.previous_button = QPushButton("Previous")
+        self.previous_button.clicked.connect(self.goto_prev_instruction)
+        self.previous_button.setDisabled(True)
         self.skip_button = QPushButton("Skip")
         self.skip_button.clicked.connect(self.skip_instruction)
         self.skip_button.setDisabled(True)
         self.next_button = QPushButton("Next")
         self.next_button.clicked.connect(self.goto_next_instruction)
         self.next_button.setDisabled(True)
+        self.action_hbox_layout.addWidget(self.previous_button)
         self.action_hbox_layout.addWidget(self.skip_button)
         self.action_hbox_layout.addWidget(self.next_button)
 
@@ -196,6 +198,7 @@ class BotWindow(QWidget):
 
         # user details HBOX  layout
         self.user_details_hbox_layout = QHBoxLayout()
+        self.user_details_hbox_layout.addWidget(QLabel("Select Form Details"))
         # Details name combo box
         self.details_name_combobox = ExtendedComboBox()
         self.user_details_hbox_layout.addWidget(self.details_name_combobox)
@@ -207,12 +210,23 @@ class BotWindow(QWidget):
         self.user_detail_name_selected = self.details_name_combobox.currentText()
         if self.user_detail_name_selected in self.user_details:
             self.details_list_combobox.addItems(self.user_details[self.user_detail_name_selected])
-        # Auto fill form button
-        self.auto_fill_form_button = QPushButton("Auto Fill Form")
-        self.user_details_hbox_layout.addWidget(self.auto_fill_form_button)
-        self.auto_fill_form_button.clicked.connect(self.fill_form_automatically)
 
         self.main_layout.addLayout(self.user_details_hbox_layout)
+
+        # Auto fill form HBOX
+        self.auto_fill_form_hbox_layout = QHBoxLayout()
+        self.auto_fill_form_hbox_layout.addWidget(QLabel("Select Form"))
+        # Auto fill form Combobox
+        self.auto_fill_form_combobox = ExtendedComboBox()
+        forms = self.config["user_form"].keys()
+        self.auto_fill_form_combobox.addItems(forms)
+        self.auto_fill_form_hbox_layout.addWidget(self.auto_fill_form_combobox)
+        # Auto fill form button
+        self.auto_fill_form_button = QPushButton("Auto Fill Form")
+        self.auto_fill_form_hbox_layout.addWidget(self.auto_fill_form_button)
+        self.auto_fill_form_button.clicked.connect(self.fill_form_automatically)
+
+        self.main_layout.addLayout(self.auto_fill_form_hbox_layout)
 
         # Status Bar
         self.status_bar = QStatusBar()
@@ -335,19 +349,34 @@ class BotWindow(QWidget):
         self.goto_home_page()
 
     def goto_next_instruction(self):
+        self.previous_button.setEnabled(True)
         self.clear_actions()
         self.status_bar.showMessage("Going to next instruction", 2000)
         self.next_button.setDisabled(True)
+        if self.instructuns_index >= len(self.instructions) - 1:
+            self.display_message_box("This is last instruction")
+            return
         self.instructuns_index += 1
-        if self.set_instruction():
-            pass
-        else:
-            self.instructuns_index -= 1
+        self.set_instruction()
+
+    def goto_prev_instruction(self):
+        self.next_button.setEnabled(True)
+        self.clear_actions()
+        self.status_bar.showMessage("Going to Previous instruction", 2000)
+        if self.instructuns_index <= 0:
+            self.display_message_box("This is first instruction you can't go behind this")
+            self.previous_button.setDisabled(True)
+            return
+        self.instructuns_index -= 1
+        self.set_instruction()
 
     def skip_instruction(self):
+        if self.instructuns_index >= len(self.instructions) - 1:
+            self.status_bar.showMessage("Instructions are out of index", 2000)
+            self.display_message_box("You reached to last instruction")
+            return
         self.status_bar.showMessage("Skipping this instruction", 2000)
-        if self.can_enable_next_button:
-            self.next_button.setEnabled(True)
+        self.next_button.setEnabled(True)
 
     def get_screenshot(self):
         prefix = self.prefixes_combobox.currentText()
@@ -398,16 +427,12 @@ class BotWindow(QWidget):
     def set_instruction(self):
         self.prefixes_combobox.clear()
         if self.instructions:
-            if self.instructuns_index >= len(self.instructions):
-                self.skip_button.setDisabled(True)
-                self.display_message_box("You completed all instructions in this website")
-                self.can_enable_next_button = False
-            else:
+            if 0 <= self.instructuns_index < len(self.instructions):
                 self.instruction_box.setPlainText(self.instructions[self.instructuns_index])
                 instruction = self.instructions[self.instructuns_index]
                 if instruction in self.config["instructions"]:
                     self.prefixes_combobox.addItems(self.config["instructions"][instruction][0])
-            return True
+                return True
         else:
             self.display_message_box("Instructions are not given")
 
@@ -451,6 +476,7 @@ class BotWindow(QWidget):
             self.display_message_box("Pls check prefix or Run name entered properly")
 
     def stop_record(self):
+        time.sleep(2)
         self.automation.record_screen_loop = False
         self.start_record_button.setEnabled(True)
         self.stop_record_button.setDisabled(True)
@@ -540,7 +566,9 @@ class BotWindow(QWidget):
             if self.record_actions_check_box.isChecked():
                 if self.start_record_button.isEnabled():
                     self.start_record_button.click()
-            thread = Thread(target=self.automation.fill_form_automatically, args=[self, self.stop_record_button])
+            selected_form = self.config["user_form"][self.auto_fill_form_combobox.currentText()]
+            thread = Thread(target=self.automation.fill_form_automatically,
+                            args=[self, selected_form, self.stop_record_button])
             thread.start()
         else:
             self.display_message_box("Pls check prefix or Run name entered properly")

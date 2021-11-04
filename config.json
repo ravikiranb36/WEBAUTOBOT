@@ -1,5 +1,33 @@
 {
   "user_form": {
+    "canada": {
+      "name": "Jane Doe",
+      "fullname": "Jane Doe",
+      "firstname": "Jane",
+      "lastname": "Doe",
+      "middlename": "Doe",
+      "username": "username",
+      "password": "password",
+      "email": "janedoe@example.com",
+      "phone_number": "8185551234",
+      "phone": "8185551234",
+      "country": "Canada",
+      "state": "Toronto",
+      "city": "Ontario",
+      "province": "Ontario",
+      "zipcode": "M1M1X1",
+      "postcode": "M1M1X1",
+      "pincode": "M1M1X1",
+      "discount_code": "",
+      "coupon_code": "",
+      "taluk": "Ontario",
+      "district": "Ontario",
+      "address": "Canada, Toronto,Ontario,M1M 1X1",
+      "apartment": "Apt 1234",
+      "company": "kttp",
+      "email_address": "janedoe@example.com"
+    },
+    "US": {
     "name": "Jane Doe",
     "fullname": "Jane Doe",
     "firstname":"Jane",
@@ -7,10 +35,10 @@
     "middlename": "Doe",
     "username": "username",
     "password": "password",
-    "email": "janedoe@example.com",
+    "email": "janedoeus@example.com",
     "phone_number": "8185551234",
     "phone": "8185551234",
-    "country": "Canada",
+    "country": "US",
     "state": "Toronto",
     "city": "Ontario",
     "province": "Ontario",
@@ -21,10 +49,11 @@
     "coupon_code": "",
     "taluk": "Ontario",
     "district": "Ontario",
-    "address": "Canada, Toronto,Ontario,M1M 1X1",
+    "address": "US, Toronto,Ontario,M1M 1X1",
     "apartment": "Apt 1234",
     "company": "kttp",
     "email_address": "janedoe@example.com"
+  }
   },
   "user_details": {
     "user name": [
