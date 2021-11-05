@@ -9,22 +9,22 @@
       "username": "username",
       "password": "password",
       "email": "janedoe@example.com",
-      "phone_number": "8185551234",
-      "phone": "8185551234",
+      "phone_number": "4165551234",
+      "phone": "4165551234",
       "country": "Canada",
-      "state": "Toronto",
-      "city": "Ontario",
+      "state": "Ontario",
+      "city": "Toronto",
       "province": "Ontario",
-      "zipcode": "M1M1X1",
-      "postcode": "M1M1X1",
-      "pincode": "M1M1X1",
+      "zipcode": "M1M 1X1",
+      "postcode": "M1M 1X1",
+      "pincode": "M1M 1X1",
       "discount_code": "",
       "coupon_code": "",
       "taluk": "Ontario",
       "district": "Ontario",
-      "address": "Canada, Toronto,Ontario,M1M 1X1",
-      "apartment": "Apt 1234",
-      "company": "kttp",
+      "address": "123 Main Street",
+      "apartment": "Apt 110",
+      "company": "Jane Doe Industries",
       "email_address": "janedoe@example.com"
     },
     "US": {
@@ -35,23 +35,23 @@
     "middlename": "Doe",
     "username": "username",
     "password": "password",
-    "email": "janedoeus@example.com",
+    "email": "janedoe@example.com",
     "phone_number": "8185551234",
     "phone": "8185551234",
-    "country": "US",
-    "state": "Toronto",
-    "city": "Ontario",
-    "province": "Ontario",
-    "zipcode": "M1M1X1",
-    "postcode": "M1M1X1",
-    "pincode": "M1M1X1",
+    "country": "United States",
+    "state": "California",
+    "city": "Studio City",
+    "province": "California",
+    "zipcode": "91604",
+    "postcode": "91604",
+    "pincode": "91604",
     "discount_code": "",
     "coupon_code": "",
-    "taluk": "Ontario",
-    "district": "Ontario",
-    "address": "US, Toronto,Ontario,M1M 1X1",
-    "apartment": "Apt 1234",
-    "company": "kttp",
+    "taluk": "California",
+    "district": "California",
+    "address": "123 Main Street",
+    "apartment": "Apt 110",
+    "company": "Jane Doe Industries",
     "email_address": "janedoe@example.com"
   }
   },
@@ -86,105 +86,123 @@
     ]
   },
   "instructions": {
-    "1) Take a screenshot of the homepage without performing any action.": [
+    "1.00) Take a screenshot of the homepage without performing any action. Click NEXT when done.": [
       [
-        "1homepage",
-        "2category",
-        "3SimpleProduct",
-        "3ComplexProduct",
-        "3AddToCartWindow",
-        "4cart",
-        "5checkout",
-        "6shippingMethod",
-        "7billingAddress",
-        "8paymentTypes",
-        "9DiscountCode",
-        "91rememberMe",
-        "92guarantee",
-        "93warranty",
-        "94privacy",
-        "95ssl",
-        "96contact",
-        "97subscribe",
-        "98other"
+        "1.00home",
+        "1.00other"
       ],
-      "second"
+      "Mark the logo with the LOGO label if applicable."
     ],
-    "2) While still on the homepage hover over to the first category menu item on the navigation. Take a screenshot.": [
+    "1.10) While still on the homepage hover over to the first category menu item on the navigation that leads to products that are in stock.  Take a Scrolling Screenshot. Click NEXT when done.": [
       [
-        "1homepage"
+        "1.10menu",
+		"1.10other"
       ],
-      "second instruction"
+      "Mark the Category that was clicked through. You may have to look ahead to see what product was selected."
     ],
-    "3) Navigate to any category on the homepage and hover over the name. Take a screenshot.": [
+    "2.00) Click through on the category page previously selected. Take a Scrolling Screenshot. Click NEXT when done.": [
       [
-        "instruction3prefix1",
-        "instruction3prefix2"
-      ],
-      "second instruction"
+        "2.00cat",
+		"2.00other"
+       ],
+      "Mark the product that was selected. You may have to look ahead to see what product was selected."
     ],
-    "4) Click through any category on the homepage. Take a screenshot of the new loaded category page.": [
+    "3.00) Navigate to the first product in stock nearest to the upper left-corner of the category page and click through. Take a Scrolling Screenshot of the newly loaded product page. IF THIS IS A SIMPLE PRODUCT with only a quantity and an ADD TO CART button then move the mouse cursor to the ADD TO CART button and click through. Click NEXT when done otherwise just click NEXT and follow the instructions for complex products.": [
       [
-        "instruction4prefix1",
-        "instruction4prefix2"
+        "3.00prod",
+		"3.00other"
+
       ],
-      "second instruction"
+      "Mark the ADD TO CART button or equivalent."
     ],
-    "5) While on the same new category page move the mouse cursor to the First product near the top left area of the page. Hover over the product and take a screenshot.": [
+    "3.10) THESE INSTRUCTIONS ARE ONLY IF THE PRODUCT IS COMPLEX WITH ATTRIBUTES. CLICK THE SKIP BUTTON then NEXT IF NOT APPLICABLE. FOR COMPLEX PRODUCTS - Perform the following actions: While on the same product page move the  cursor to any necesary attributes the user would have to select to add the item to cart. Be sure to FIRST select the ADD CLICK option and then move the cursor to select an attibute. Reselect the ADD CLICK option and move back to the same point and then click CTRL+A and then ENTER.  Repeat this pattern with every attribute including the ADD TO CART button as the last action.  Click the PLAY ACTION button to confirm the actions are correct and then select RECORD ACTIONS and then click the PLAY ACTION button again. Your actions will be automatically recorded. When done move to the ADD TO CART button and click through. Click NEXT when done. ": [
       [
-        "instruction5prefix1",
-        "instruction5prefix2"
+        "3.10complexprod",
+		"3.10other"
+
       ],
-      "second instruction"
+      "Nothing is required for this video clip"
     ],
-    "6) Click through to the product details. Take a screenshot.": [
+    "3.20 - 3.30 - 3.40) STILL ON SAME PAGE after clicking ADD TO CART? This instruction is only applicable if either a SIDE cart or MODAL popup cart or the item was just ADDED with a minor icon change or no change at all after clicking the ADD TO CART button. If adding the item to cart took you to a completely new page then click the SKIP button and then click NEXT. Otherwise first select the appropriate Prefix and take a SCROLLING SCREENSHOT so that that the side cart, modal pop-up or any minor changes are documented. If available - Click Through to the CART otherwise Click the CHECKOUT button. Click NEXT when done.  ": [
       [
-        "instruction6prefix1",
-        "instruction6prefix2"
+        "3.20side",
+        "3.30modal",
+		"3.40added",
+		"3.20other",
+		"3.30other",
+		"3.40other"
       ],
-      "second instruction"
+      "Add a coordinate on all applicable buttons.  View Cart and/or Checkout buttons."
     ],
-    "7) Hover over to the first available product attribute excluding quantity.Click the product attribute drop-down menu. Take a screenshot.": [
+    "4.00) NOW ON THE CART Page? This instruction is only applicable if this is the Cart Page otherwise click the SKIP button and then click NEXT. Take a SCROLLING SCREENSHOT of the Cart Page. After taking the screenshot click the CHECKOUT BUTTON. Click NEXT when done.": [
       [
-        "instruction7prefix1",
-        "instruction7prefix2"
+        "4.00cart",
+		"4.00other"
+
       ],
-      "second instruction"
+      "Add a coordinate on the CHECKOUT button. (or equivalent). label accordingly."
     ],
-    "8) Repeat what you did in step #7 for every subsequent product attribute. Take a screenshot for each one.": [
+    "5.10) ONLY for the Checkout Page - Section starting with EMAIL. Make sure the CONTINUE button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the CONTINUE button is viewable without having to scroll down. Make sure the COUNTRY and PROVINCE/STATE show United States and California if available - if not select CANADA and ONTARIO. Take a SCROLLING SCREENSHOT. Click NEXT when done.": [
       [
-        "instruction8prefix1",
-        "instruction8prefix2"
+        "5.10email",
+		"5.10other"
+
       ],
-      "second instruction"
+      "Add coordinates on the email, first name, last name, company name, street address, apartment, city, postal/zip code, phone, continue button, return to cart and label all accordingly."
     ],
-    "9) Hover over the add to cart button. Take a screenshot.": [
+    "5.15)  RECORING VIDEO PLAY ACTIONS - ONLY for the Checkout Page - Section starting with EMAIL. While still on the same EMAIL section of the checkout.  Make sure the COUNTRY and PROVINCE/STATE show United States and California if available - if not select CANADA and ONTARIO. Place the cursor in the EMAIL field and click once in the field. Return to the BOT and click AUTO FILL FORM. (The bot will automatically fill out the form and record a screencast. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
-        "instruction9prefix1",
-        "instruction9prefix2"
+        "5.15email",
+		"5.15other"
+
       ],
-      "second instruction"
+      "Nothing is required for this video clip"
     ],
-    "10) Click the add to cart button. Take a screenshot of any interim modal or pop up.": [
+    "5.20) ONLY for the Checkout Page - Section showing Shipping Options. Take a Scrolling Screenshot. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
-        "instruction10prefix1",
-        "instruction10prefix2"
+        "5.20ship",
+		"5.20other"
+
       ],
-      "second instruction"
+      "Add a coordinate on the CONTINUE TO PAYMENT button. (or equivalent). label accordingly."
     ],
-    "11) Click on the cart button. Take a screenshot.": [
+    "5.30) ONLY for the Checkout Page - Section with CREDIT CARD PAYMENT Options. (If Only PAYPAL then SKIP to NEXT INSTRUCTIONS). Make sure the PAY NOW button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the CONTINUE button is viewable without having to scroll down.  Take a SCROLLING SCREENSHOT. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
-        "instruction11prefix1",
-        "instruction11prefix2"
+        "5.30pay",
+		"5.30other"
+
       ],
-      "second instruction"
+      "Add coordinates on the credit card number, Name on Card, Expiration date, Security Code and Pay Now button. (or equivalent). label all accordingly. OR if there is a Pay by Credit Card radial - mark it with the PAY-BY-CREDIT-CARD Label."
     ],
-    "12) Click on the checkout button. Take a screenshot.": [
+	"5.31) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the default Option but Credit Card is another option. (If NOT - then SKIP to NEXT INSTRUCTIONS)  Make sure the PAYMENT button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the PAYMENT button is viewable without having to scroll down. Select the CREDIT CARD option and Take a SCROLLING SCREENSHOT. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
-        "instruction12prefix1",
-        "instruction12prefix2"
+        "5.31payCCselected",
+		"5.31other"
+
       ],
-      "second instruction"
+      "Add coordinates on the credit card number, Name on Card, Expiration date, Security Code and Pay Now button. (or equivalent). label all accordingly."
+    ],
+	"5.32) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the default Option but Credit Card is another option - PART 2. (If NOT - then SKIP to NEXT INSTRUCTIONS)  While still on the payment page (now that the credit card fields are visible) take a SCROLLING SCREENSHOT. Click NEXT when done.": [
+      [
+        "5.32payCC",
+		"5.32other"
+
+      ],
+      "Add coordinates on the credit card number, Name on Card, Expiration date, Security Code and Pay Now button. (or equivalent). label all accordingly."
+    ],
+    "5.40) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the ONLY Option.(If NOT - then SKIP to NEXT INSTRUCTIONS)  Make sure the PAYMENT button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the PAYMENT button is viewable without having to scroll down. Take a SCROLLING SCREENSHOT. Click NEXT when done.": [
+      [
+        "5.40payPayPal",
+		"5.40other",
+		"6.00other",
+		"7.00other",
+		"8.00other",
+		"9.00other",
+		"10.00other"
+
+
+      ],
+      "Add a coordinate on the PAYMENT button. (or equivalent). label accordingly."
     ]
   }
 }

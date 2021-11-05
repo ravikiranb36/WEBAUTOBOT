@@ -4,10 +4,8 @@ import re
 import shutil
 import time
 import traceback
-from getpass import getuser
 from urllib.parse import urlparse
 
-import cv2
 import numpy as np
 import pyautogui
 import requests
@@ -17,6 +15,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
+from cv2 import cv2
 
 
 class Automation:
@@ -26,8 +25,7 @@ class Automation:
         self.scrollable_actions_list = []
         self.jquery = requests.get("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js").text
         self.record_screen_loop = False
-        options = webdriver.ChromeOptions()
-        options.add_argument(f"--user-data-dir=C:\\Users\\{getuser()}\\AppData\\Local\\Google\\Chrome\\User Data")
+
         self.driver = webdriver.Chrome(executable_path="chromedriver.exe")
         self.actions = ActionChains(self.driver)
         if not os.path.exists("screenshots"):

@@ -1,4 +1,6 @@
 import json
+import os
+import subprocess
 import sys
 import time
 from threading import Thread
@@ -10,7 +12,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QShortcut
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QComboBox, QHBoxLayout, QVBoxLayout,
                                QWidget, QFormLayout, QCompleter, QPushButton, QPlainTextEdit, QSpinBox, QMessageBox,
-                               QStatusBar, QCheckBox)
+                               QStatusBar, QCheckBox, QMenuBar, QMenu, QMainWindow)
 
 from automation import Automation
 
@@ -71,6 +73,7 @@ class BotWindow(QWidget):
 
         with open("config.json", "r") as f:
             self.config = json.load(f)
+        # self.configure_working_dir()
         self.urls_list = self.get_websites_list()
         self.instructions = list(self.config["instructions"].keys())
         # self.prefix_list = self.get_prefixes_list()
@@ -80,8 +83,34 @@ class BotWindow(QWidget):
         self.setLayout(self.main_layout)
         self.show()
 
+    # def configure_working_dir(self):
+    #     work_dir = self.config["work_dir"]
+    #     if work_dir:
+    #         return
+    #     else:
+    #         d = QFileDialog.getExistingDirectory(self,"Select Bot Working folder")
+    #         self.config["work_dir"] = d
+    #         with open("config.json", "w") as f:
+    #             json.dump(self.config, f)
+
     def create_widgets(self):
         self.setFixedSize(500, 650)
+
+        # Menu Bar
+        open_folder_hbox_layout = QHBoxLayout()
+        open_scr_shot_folder_button = QPushButton("Open Screen Shots")
+        open_scr_shot_folder_button.clicked.connect(
+            lambda: subprocess.call(f'explorer {os.path.join(os.curdir, "All_ScreenShots")}', shell=True)
+        )
+        open_folder_hbox_layout.addWidget(open_scr_shot_folder_button)
+
+        open_scr_rec_folder_button = QPushButton("Open Screen Records")
+        open_scr_rec_folder_button.clicked.connect(
+            lambda: subprocess.call(f'explorer {os.path.join(os.curdir, "All_Screen_Records")}', shell=True)
+        )
+        open_folder_hbox_layout.addWidget(open_scr_rec_folder_button)
+        self.main_layout.addLayout(open_folder_hbox_layout)
+
         self.form_layout = QFormLayout()
 
         self.run_name = QLineEdit()
