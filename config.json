@@ -28,32 +28,32 @@
       "email_address": "janedoe@example.com"
     },
     "US": {
-    "name": "Jane Doe",
-    "fullname": "Jane Doe",
-    "firstname":"Jane",
-    "lastname": "Doe",
-    "middlename": "Doe",
-    "username": "username",
-    "password": "password",
-    "email": "janedoe@example.com",
-    "phone_number": "8185551234",
-    "phone": "8185551234",
-    "country": "United States",
-    "state": "California",
-    "city": "Studio City",
-    "province": "California",
-    "zipcode": "91604",
-    "postcode": "91604",
-    "pincode": "91604",
-    "discount_code": "",
-    "coupon_code": "",
-    "taluk": "California",
-    "district": "California",
-    "address": "123 Main Street",
-    "apartment": "Apt 110",
-    "company": "Jane Doe Industries",
-    "email_address": "janedoe@example.com"
-  }
+      "name": "Jane Doe",
+      "fullname": "Jane Doe",
+      "firstname": "Jane",
+      "lastname": "Doe",
+      "middlename": "Doe",
+      "username": "username",
+      "password": "password",
+      "email": "janedoe@example.com",
+      "phone_number": "8185551234",
+      "phone": "8185551234",
+      "country": "United States",
+      "state": "California",
+      "city": "Studio City",
+      "province": "California",
+      "zipcode": "91604",
+      "postcode": "91604",
+      "pincode": "91604",
+      "discount_code": "",
+      "coupon_code": "",
+      "taluk": "California",
+      "district": "California",
+      "address": "123 Main Street",
+      "apartment": "Apt 110",
+      "company": "Jane Doe Industries",
+      "email_address": "janedoe@example.com"
+    }
   },
   "user_details": {
     "user name": [
@@ -96,30 +96,28 @@
     "1.10) While still on the homepage hover over to the first category menu item on the navigation that leads to products that are in stock.  Take a Scrolling Screenshot. Click NEXT when done.": [
       [
         "1.10menu",
-		"1.10other"
+        "1.10other"
       ],
       "Mark the Category that was clicked through. You may have to look ahead to see what product was selected."
     ],
     "2.00) Click through on the category page previously selected. Take a Scrolling Screenshot. Click NEXT when done.": [
       [
         "2.00cat",
-		"2.00other"
-       ],
+        "2.00other"
+      ],
       "Mark the product that was selected. You may have to look ahead to see what product was selected."
     ],
     "3.00) Navigate to the first product in stock nearest to the upper left-corner of the category page and click through. Take a Scrolling Screenshot of the newly loaded product page. IF THIS IS A SIMPLE PRODUCT with only a quantity and an ADD TO CART button then move the mouse cursor to the ADD TO CART button and click through. Click NEXT when done otherwise just click NEXT and follow the instructions for complex products.": [
       [
         "3.00prod",
-		"3.00other"
-
+        "3.00other"
       ],
       "Mark the ADD TO CART button or equivalent."
     ],
     "3.10) THESE INSTRUCTIONS ARE ONLY IF THE PRODUCT IS COMPLEX WITH ATTRIBUTES. CLICK THE SKIP BUTTON then NEXT IF NOT APPLICABLE. FOR COMPLEX PRODUCTS - Perform the following actions: While on the same product page move the  cursor to any necesary attributes the user would have to select to add the item to cart. Be sure to FIRST select the ADD CLICK option and then move the cursor to select an attibute. Reselect the ADD CLICK option and move back to the same point and then click CTRL+A and then ENTER.  Repeat this pattern with every attribute including the ADD TO CART button as the last action.  Click the PLAY ACTION button to confirm the actions are correct and then select RECORD ACTIONS and then click the PLAY ACTION button again. Your actions will be automatically recorded. When done move to the ADD TO CART button and click through. Click NEXT when done. ": [
       [
         "3.10complexprod",
-		"3.10other"
-
+        "3.10other"
       ],
       "Nothing is required for this video clip"
     ],
@@ -127,80 +125,71 @@
       [
         "3.20side",
         "3.30modal",
-		"3.40added",
-		"3.20other",
-		"3.30other",
-		"3.40other"
+        "3.40added",
+        "3.20other",
+        "3.30other",
+        "3.40other"
       ],
       "Add a coordinate on all applicable buttons.  View Cart and/or Checkout buttons."
     ],
     "4.00) NOW ON THE CART Page? This instruction is only applicable if this is the Cart Page otherwise click the SKIP button and then click NEXT. Take a SCROLLING SCREENSHOT of the Cart Page. After taking the screenshot click the CHECKOUT BUTTON. Click NEXT when done.": [
       [
         "4.00cart",
-		"4.00other"
-
+        "4.00other"
       ],
       "Add a coordinate on the CHECKOUT button. (or equivalent). label accordingly."
     ],
     "5.10) ONLY for the Checkout Page - Section starting with EMAIL. Make sure the CONTINUE button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the CONTINUE button is viewable without having to scroll down. Make sure the COUNTRY and PROVINCE/STATE show United States and California if available - if not select CANADA and ONTARIO. Take a SCROLLING SCREENSHOT. Click NEXT when done.": [
       [
         "5.10email",
-		"5.10other"
-
+        "5.10other"
       ],
       "Add coordinates on the email, first name, last name, company name, street address, apartment, city, postal/zip code, phone, continue button, return to cart and label all accordingly."
     ],
     "5.15)  RECORING VIDEO PLAY ACTIONS - ONLY for the Checkout Page - Section starting with EMAIL. While still on the same EMAIL section of the checkout.  Make sure the COUNTRY and PROVINCE/STATE show United States and California if available - if not select CANADA and ONTARIO. Place the cursor in the EMAIL field and click once in the field. Return to the BOT and click AUTO FILL FORM. (The bot will automatically fill out the form and record a screencast. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
         "5.15email",
-		"5.15other"
-
+        "5.15other"
       ],
       "Nothing is required for this video clip"
     ],
     "5.20) ONLY for the Checkout Page - Section showing Shipping Options. Take a Scrolling Screenshot. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
         "5.20ship",
-		"5.20other"
-
+        "5.20other"
       ],
       "Add a coordinate on the CONTINUE TO PAYMENT button. (or equivalent). label accordingly."
     ],
     "5.30) ONLY for the Checkout Page - Section with CREDIT CARD PAYMENT Options. (If Only PAYPAL then SKIP to NEXT INSTRUCTIONS). Make sure the PAY NOW button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the CONTINUE button is viewable without having to scroll down.  Take a SCROLLING SCREENSHOT. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
         "5.30pay",
-		"5.30other"
-
+        "5.30other"
       ],
       "Add coordinates on the credit card number, Name on Card, Expiration date, Security Code and Pay Now button. (or equivalent). label all accordingly. OR if there is a Pay by Credit Card radial - mark it with the PAY-BY-CREDIT-CARD Label."
     ],
-	"5.31) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the default Option but Credit Card is another option. (If NOT - then SKIP to NEXT INSTRUCTIONS)  Make sure the PAYMENT button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the PAYMENT button is viewable without having to scroll down. Select the CREDIT CARD option and Take a SCROLLING SCREENSHOT. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
+    "5.31) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the default Option but Credit Card is another option. (If NOT - then SKIP to NEXT INSTRUCTIONS)  Make sure the PAYMENT button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the PAYMENT button is viewable without having to scroll down. Select the CREDIT CARD option and Take a SCROLLING SCREENSHOT. Click the CONTINUE button to move on to the next section. Click NEXT when done.": [
       [
         "5.31payCCselected",
-		"5.31other"
-
+        "5.31other"
       ],
       "Add coordinates on the credit card number, Name on Card, Expiration date, Security Code and Pay Now button. (or equivalent). label all accordingly."
     ],
-	"5.32) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the default Option but Credit Card is another option - PART 2. (If NOT - then SKIP to NEXT INSTRUCTIONS)  While still on the payment page (now that the credit card fields are visible) take a SCROLLING SCREENSHOT. Click NEXT when done.": [
+    "5.32) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the default Option but Credit Card is another option - PART 2. (If NOT - then SKIP to NEXT INSTRUCTIONS)  While still on the payment page (now that the credit card fields are visible) take a SCROLLING SCREENSHOT. Click NEXT when done.": [
       [
         "5.32payCC",
-		"5.32other"
-
+        "5.32other"
       ],
       "Add coordinates on the credit card number, Name on Card, Expiration date, Security Code and Pay Now button. (or equivalent). label all accordingly."
     ],
     "5.40) ONLY for the Checkout Page - Section with PAYPAL PAYMENT as the ONLY Option.(If NOT - then SKIP to NEXT INSTRUCTIONS)  Make sure the PAYMENT button is viewable at the bottom of the page without having to scroll down.  You may have to temporarily click F11 to activate FULL-SCREEN mode. If this still isn't enough then Zoom Out until the PAYMENT button is viewable without having to scroll down. Take a SCROLLING SCREENSHOT. Click NEXT when done.": [
       [
         "5.40payPayPal",
-		"5.40other",
-		"6.00other",
-		"7.00other",
-		"8.00other",
-		"9.00other",
-		"10.00other"
-
-
+        "5.40other",
+        "6.00other",
+        "7.00other",
+        "8.00other",
+        "9.00other",
+        "10.00other"
       ],
       "Add a coordinate on the PAYMENT button. (or equivalent). label accordingly."
     ]

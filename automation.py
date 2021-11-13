@@ -16,6 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from cv2 import cv2
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class Automation:
@@ -25,8 +26,9 @@ class Automation:
         self.scrollable_actions_list = []
         self.jquery = requests.get("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js").text
         self.record_screen_loop = False
-
-        self.driver = webdriver.Chrome(executable_path="chromedriver.exe")
+        options = webdriver.ChromeOptions()
+        options.add_argument("--disable-gpu")
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.actions = ActionChains(self.driver)
         if not os.path.exists("screenshots"):
             os.mkdir("screenshots")
@@ -90,7 +92,8 @@ class Automation:
         try:
             options = webdriver.ChromeOptions()
             options.headless = True
-            driver = webdriver.Chrome(executable_path="chromedriver.exe", options=options)
+            options.add_argument("--disable-gpu")
+            driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             driver.get(self.driver.current_url)
             s = lambda x: driver.execute_script('return document.body.parentNode.scroll' + x)
             driver.set_window_size(s('Width'), s('Height'))
@@ -358,6 +361,8 @@ class Automation:
                             try:
                                 data_to_fill = user_form[assumed[0]]
                                 inp.clear()
+                                # inp_location = inp.location
+                                # self.move_to_element_slowly(inp_location)
                                 for ch in data_to_fill:
                                     inp.send_keys(ch)
                                     time.sleep(0.03)
@@ -367,3 +372,18 @@ class Automation:
                                 print(f"Error: {e}")
                             break
         window.stop_record()
+
+    def auto_scroll_page(self, window, speed=8):
+        current_scroll_position, new_height = 0, 1
+        self.driver.execute_script("window.scrollTo(0, {});".format(current_scroll_position))
+        time.sleep(1)
+        while current_scroll_position <= new_height:
+            current_scroll_position += speed
+            self.driver.execute_script("window.scrollTo(0, {});".format(current_scroll_position))
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+        window.stop_record()
+
+    def move_to_element_slowly(self, position):
+        # self.driver.execute_script(self.jquery)
+        top = position["y"]
+        self.driver.execute_script("window.scrollTo({top:%s,left:0,behavior:'auto'});" % top)

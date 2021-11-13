@@ -165,6 +165,11 @@ class BotWindow(QWidget):
         self.take_scrolling_screenshot_button.clicked.connect(self.get_scrolling_screenshot)
         self.screenshot_hbox_layout1.addWidget(self.take_screenshot_button)
         self.screenshot_hbox_layout1.addWidget(self.take_scrolling_screenshot_button)
+
+        self.auto_scrol_page_btn = QPushButton("Auto Scroll Page")
+        self.auto_scrol_page_btn.setDisabled(True)
+        self.auto_scrol_page_btn.clicked.connect(self.record_auto_scroll_page)
+        self.screenshot_hbox_layout1.addWidget(self.auto_scrol_page_btn)
         self.main_layout.addLayout(self.screenshot_hbox_layout1)
 
         # Action record row 1
@@ -312,6 +317,9 @@ class BotWindow(QWidget):
         QShortcut('Ctrl+Shift+F', self).activated.connect(
             lambda: self.auto_fill_form_button.click() if self.auto_fill_form_button.isEnabled() else
             self.display_message_box("Auto Fill button not enabled"))
+        QShortcut('Ctrl+Shift+A', self).activated.connect(
+            lambda: self.auto_scrol_page_btn.click() if self.auto_scrol_page_btn.isEnabled() else
+            self.display_message_box("Auto Scroll button not enabled"))
 
     @staticmethod
     def get_websites_list():
@@ -366,6 +374,7 @@ class BotWindow(QWidget):
         self.add_action_button.setEnabled(True)
         self.clear_action_button.setEnabled(True)
         self.play_action_button.setEnabled(True)
+        self.auto_scrol_page_btn.setEnabled(True)
 
     def goto_next_site(self):
         if self.websites_index >= len(self.urls_list):
@@ -598,6 +607,20 @@ class BotWindow(QWidget):
             selected_form = self.config["user_form"][self.auto_fill_form_combobox.currentText()]
             thread = Thread(target=self.automation.fill_form_automatically,
                             args=[self, selected_form, self.stop_record_button])
+            thread.start()
+        else:
+            self.display_message_box("Pls check prefix or Run name entered properly")
+
+    def record_auto_scroll_page(self):
+        prefix = self.prefixes_combobox.currentText()
+        suffix = self.run_name.text()
+        if prefix and suffix:
+            self.showMinimized()
+            if self.record_actions_check_box.isChecked():
+                if self.start_record_button.isEnabled():
+                    self.start_record_button.click()
+            thread = Thread(target=self.automation.auto_scroll_page,
+                            args=[self])
             thread.start()
         else:
             self.display_message_box("Pls check prefix or Run name entered properly")
