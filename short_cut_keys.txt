@@ -1,0 +1,22 @@
+'Ctrl+H' -> Go to Home page
+'Ctrl+N' -> Next Site
+'Ctrl+S'-> Screen shot
+'Ctrl+Shift+S' -> Scrolling screenshot
+'Ctrl+R' -> Pause or Record video
+'Ctrl+Alt+A' -> Add action
+'Ctrl+Shift+V' -> Start or stop video
+'Ctrl+P' -> Play actions
+'Ctrl+C' check or uncheck the add click checkbox
+'Ctrl+L' -> Click at mouse point
+'Ctrl+M' -> Minimise or Normal show of bot
+'Ctrl+D' -> Move down the bot
+'Ctrl+U' -> Move up the bot
+'Ctrl+B' -> Backward
+'Ctrl+F' -> Forward
+'Ctrl+Q' -> Close or quit the bot
+'Ctrl+E' -> Enter selected user details of input box at mouse cursor
+'Ctrl+Shift+U' -> Select form input name Eg: username, email
+'Ctrl+Shift+L' -> Select for input data
+'Ctrl+Shift+F' -> Auto fill form
+'Ctrl+Shift+A' -> Auto scroll the page
+'Ctrl+Alt+S' -> Add scroll

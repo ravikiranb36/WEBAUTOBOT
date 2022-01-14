@@ -28,6 +28,10 @@ class Automation:
         self.record_screen_loop = False
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-gpu")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_argument("--disable-infobars")
+        options.add_argument("--start-fullscreen")
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.actions = ActionChains(self.driver)
         if not os.path.exists("screenshots"):
@@ -45,8 +49,8 @@ class Automation:
         window.setDisabled(True)
         try:
             self.driver.get(url)
-            self.driver.maximize_window()
-            self.browser_width, self.browser_height = pyautogui.size()
+            # self.driver.maximize_window()
+            self.driver.fullscreen_window()
             self.driver.execute_script("window.focus();")
         except Exception as e:
             print(f"Error: {e}")
@@ -83,8 +87,10 @@ class Automation:
                 f.write(f"{filename}\t{second_instruction}\n")
             self.driver.save_screenshot(file_full_path)
             shutil.copyfile(file_full_path, os.path.join(os.curdir, "All_ScreenShots", filename))
+            window.add_action_time_log("Screenshot")
         except Exception as e:
             print(f"Error: {e}")
+            window.add_action_time_log("Get scrolling Screenshot")
         window.setEnabled(True)
 
     def take_scrolled_screenshot(self, window, prefix, suffix, second_instruction, delay):
@@ -124,14 +130,16 @@ class Automation:
             driver.find_element(By.TAG_NAME, 'body').screenshot(file_full_path)
             shutil.copyfile(file_full_path, os.path.join(os.curdir, "All_ScreenShots", filename))
             driver.quit()
+            window.add_action_time_log("Get scrolling screenshot")
         except Exception as e:
             traceback.print_exc()
+            window.add_action_time_log("Failed to get scrolling screenshot")
         window.setEnabled(True)
 
     def refresh_page(self):
         self.driver.refresh()
 
-    def record_screen(self, window, prefix, suffix, second_instruction, delay):
+    def record_screen(self, window, prefix, suffix, second_instruction, delay,hide_cursor):
         try:
             url = self.driver.current_url
             parsed_url = urlparse(url)
@@ -183,12 +191,13 @@ class Automation:
                         # Convert it from BGR(Blue, Green, Red) to
                         # RGB(Red, Green, Blue)
                         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                        Xthis = [mouse_x + 1 * x for x in Xs]
-                        Ythis = [mouse_y + 1 * y for y in Ys]
-                        points = list(zip(Xthis, Ythis))
-                        points = np.array(points, 'int32')
-                        cv2.fillPoly(frame, [points], color=[255, 255, 255])
-                        cv2.polylines(frame, [points], isClosed=True, color=[0, 0, 0])
+                        if not hide_cursor:
+                            Xthis = [mouse_x + 1 * x for x in Xs]
+                            Ythis = [mouse_y + 1 * y for y in Ys]
+                            points = list(zip(Xthis, Ythis))
+                            points = np.array(points, 'int32')
+                            cv2.fillPoly(frame, [points], color=[255, 255, 255])
+                            cv2.polylines(frame, [points], isClosed=True, color=[0, 0, 0])
                         # Write it to the output file
                         out.write(frame)
                         # Optional: Display the recording screen
@@ -371,6 +380,7 @@ class Automation:
                             except Exception as e:
                                 print(f"Error: {e}")
                             break
+        window.add_action_time_log("Automatic form fill")
         window.stop_record()
 
     def auto_scroll_page(self, window, speed=8):
@@ -381,9 +391,18 @@ class Automation:
             current_scroll_position += speed
             self.driver.execute_script("window.scrollTo(0, {});".format(current_scroll_position))
             new_height = self.driver.execute_script("return document.body.scrollHeight")
+        window.add_action_time_log("Auto scroll page")
         window.stop_record()
 
     def move_to_element_slowly(self, position):
         # self.driver.execute_script(self.jquery)
         top = position["y"]
         self.driver.execute_script("window.scrollTo({top:%s,left:0,behavior:'auto'});" % top)
+
+    def page_scroll_down(self):
+        for i in range(1, self.config["scroll_height"]):
+            self.driver.execute_script(f"window.scrollBy(0,1)", "")
+
+    def page_scroll_up(self):
+        for i in range(1, self.config["scroll_height"]):
+            self.driver.execute_script(f"window.scrollBy(0,-1)", "")

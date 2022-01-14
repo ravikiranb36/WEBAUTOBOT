@@ -7,14 +7,18 @@ from threading import Thread
 
 import pyautogui
 from PySide6 import QtCore
-from PySide6.QtCore import QSortFilterProxyModel
+from PySide6 import QtWidgets
+from PySide6.QtCore import QSortFilterProxyModel, QTimer
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QShortcut
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QComboBox, QHBoxLayout, QVBoxLayout,
                                QWidget, QFormLayout, QCompleter, QPushButton, QPlainTextEdit, QSpinBox, QMessageBox,
-                               QStatusBar, QCheckBox, QMenuBar, QMenu, QMainWindow)
+                               QStatusBar, QCheckBox, QTableWidget, QTableWidgetItem, QFileDialog)
 
 from automation import Automation
+
+# Log report titles
+log_report_titles = ["Time stamp", "Actions", "Elapsed Time(In seconds)", "Website", "Instruction"]
 
 
 class ExtendedComboBox(QComboBox):
@@ -51,8 +55,41 @@ class ExtendedComboBox(QComboBox):
         super(ExtendedComboBox, self).setModelColumn(column)
 
 
+class LogPopupWindow(QWidget):
+    def __init__(self, parent=None):
+        self.parent = parent
+        super().__init__()
+        self.main_layout = QVBoxLayout()
+        self.setLayout(self.main_layout)
+        self.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint)
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.parent.setDisabled(True)
+        self.showMaximized()
+
+    def create_log_table(self, log_list):
+        self.log_table = QTableWidget(self)
+        self.log_table.setColumnCount(5)
+        self.log_table.setRowCount(len(log_list))
+        for row, items in enumerate(log_list):
+            for col, item in enumerate(items):
+                self.log_table.setItem(row, col, QTableWidgetItem(item))
+        self.log_table.setHorizontalHeaderLabels(log_report_titles)
+        header = self.log_table.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.main_layout.addWidget(self.log_table)
+
+    def closeEvent(self, event):
+        try:
+            self.parent.timer_log.pop()
+        except:
+            pass
+        self.parent.setEnabled(True)
+        event.accept()
+
+
 class BotWindow(QWidget):
-    def __init__(self):
+    def __init__(self, parent=None):
         """
         Initialises Bot Window
         """
@@ -60,13 +97,17 @@ class BotWindow(QWidget):
         self.websites_index = 0
         self.non_scrollable_actions_list = []
         self.user_details = []
+        self.timer_count = 0
+        self.total_time = 0
+        self.instruction_time_count = 0
+        self.timer_log = []
         try:
             with open("config.json") as f:
                 self.config = json.load(f)
                 self.user_details = self.config["user_details"]
         except Exception as e:
             print(f"Error: {e}")
-        super().__init__()
+        super(BotWindow, self).__init__(parent)
 
         # Selenium automation object
         self.automation = Automation(self.config)
@@ -94,7 +135,7 @@ class BotWindow(QWidget):
     #             json.dump(self.config, f)
 
     def create_widgets(self):
-        self.setFixedSize(500, 650)
+        self.setFixedSize(550, 650)
 
         # Menu Bar
         open_folder_hbox_layout = QHBoxLayout()
@@ -140,15 +181,21 @@ class BotWindow(QWidget):
         self.keep_on_top_check_box.setChecked(True)
         self.toggle_window_on_top()
         self.refresh_hbox_layout.addWidget(self.keep_on_top_check_box)
+
+        # Check box for Fullscreen
+        self.fullscreen_ck_box = QCheckBox("Fullscreen - F11")
+        self.fullscreen_ck_box.clicked.connect(self.set_fullscreen)
+        self.fullscreen_ck_box.setChecked(True)
+        # Check box for Hide mouse cursor in video
+        self.hide_cursor_ck_box = QCheckBox("Hide Cursor")
+        self.hide_cursor_ck_box.setChecked(True)
+        self.refresh_hbox_layout.addWidget(self.hide_cursor_ck_box)
+
         self.main_layout.addLayout(self.refresh_hbox_layout)
 
         self.instruction_box = QPlainTextEdit()
         self.instruction_box.setReadOnly(True)
         self.form_layout.addRow(QLabel("Instruction"), self.instruction_box)
-
-        self.screenshot_delay = QSpinBox()
-        self.screenshot_delay.setRange(0, 10)
-        self.form_layout.addRow(QLabel("ScreenShot delay"), self.screenshot_delay)
 
         self.prefixes_combobox = ExtendedComboBox()
         # self.prefixes_combobox.addItems(self.prefix_list)
@@ -157,6 +204,9 @@ class BotWindow(QWidget):
         self.main_layout.addLayout(self.form_layout)
 
         self.screenshot_hbox_layout1 = QHBoxLayout()
+        self.screenshot_delay = QSpinBox()
+        self.screenshot_delay.setRange(0, 30)
+        self.screenshot_hbox_layout1.addWidget(self.screenshot_delay)
         self.take_screenshot_button = QPushButton("Get Screenshot")
         self.take_screenshot_button.clicked.connect(self.get_screenshot)
         self.take_screenshot_button.setDisabled(True)
@@ -179,12 +229,24 @@ class BotWindow(QWidget):
         self.record_actions_check_box = QCheckBox("Record Actions")
         self.action_record_hbox_layout1.addWidget(self.record_actions_check_box)
         self.play_action_delay = QSpinBox()
-        self.play_action_delay.setRange(1, 10)
+        self.play_action_delay.setRange(1, 100)
         self.action_record_hbox_layout1.addWidget(self.play_action_delay)
         self.add_action_button = QPushButton("Add Action")
         self.add_action_button.setDisabled(True)
         self.add_action_button.clicked.connect(self.add_action)
         self.action_record_hbox_layout1.addWidget(self.add_action_button)
+        # Add scroll button
+        self.add_scroll_button = QPushButton("Add Scroll")
+        self.add_scroll_button.setDisabled(True)
+        self.add_scroll_button.clicked.connect(self.add_scroll)
+        self.action_record_hbox_layout1.addWidget(self.add_scroll_button)
+
+        # Add Pause button
+        self.add_pause_button = QPushButton("Add Pause")
+        self.add_pause_button.setDisabled(True)
+        self.add_pause_button.clicked.connect(self.add_pause)
+        self.action_record_hbox_layout1.addWidget(self.add_pause_button)
+
         self.main_layout.addLayout(self.action_record_hbox_layout1)
 
         # Action record row 2
@@ -193,6 +255,10 @@ class BotWindow(QWidget):
         self.clear_action_button.setDisabled(True)
         self.clear_action_button.clicked.connect(self.clear_actions)
         self.action_record_hbox_layout2.addWidget(self.clear_action_button)
+        self.clear_last_action_button = QPushButton("Clear LastAction")
+        self.clear_last_action_button.setDisabled(True)
+        self.clear_last_action_button.clicked.connect(self.remove_last_action)
+        self.action_record_hbox_layout2.addWidget(self.clear_last_action_button)
         self.play_action_button = QPushButton("Play Action")
         self.play_action_button.setDisabled(True)
         self.play_action_button.clicked.connect(self.play_actions)
@@ -259,8 +325,27 @@ class BotWindow(QWidget):
         self.auto_fill_form_button = QPushButton("Auto Fill Form")
         self.auto_fill_form_hbox_layout.addWidget(self.auto_fill_form_button)
         self.auto_fill_form_button.clicked.connect(self.fill_form_automatically)
-
         self.main_layout.addLayout(self.auto_fill_form_hbox_layout)
+
+        self.timer_hbox_layout = QHBoxLayout()
+        self.timer_hbox_layout.addWidget(QLabel("Timer"))
+        self.timer_label = QPushButton("%.1f Seconds" % self.timer_count)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_timer)
+        self.timer_hbox_layout.addWidget(self.timer_label)
+        # Total time
+        self.timer_hbox_layout.addWidget(QLabel("Total Time: "))
+        self.total_time_label = QPushButton("%.1f Seconds" % self.total_time)
+        self.timer_hbox_layout.addWidget(self.total_time_label)
+        self.open_log_button = QPushButton("Open Time Log")
+        self.open_log_button.clicked.connect(self.open_log_window)
+        self.timer_hbox_layout.addWidget(self.open_log_button)
+
+        # Dump Timer logs
+        self.dump_log_button = QPushButton("Log report")
+        self.dump_log_button.clicked.connect(self.dump_time_log)
+        self.timer_hbox_layout.addWidget(self.dump_log_button)
+        self.main_layout.addLayout(self.timer_hbox_layout)
 
         # Status Bar
         self.status_bar = QStatusBar()
@@ -282,7 +367,7 @@ class BotWindow(QWidget):
         QShortcut('Ctrl+R', self).activated.connect(
             lambda: self.pause_record_button.click() if self.pause_record_button.isEnabled() else
             self.display_message_box("Pause button not enabled"))
-        QShortcut('Ctrl+A', self).activated.connect(
+        QShortcut('Ctrl+Alt+A', self).activated.connect(
             lambda: self.add_action_button.click() if self.add_action_button.isEnabled() else
             self.display_message_box("Add Action not enabled"))
         QShortcut('Ctrl+Shift+V', self).activated.connect(
@@ -320,6 +405,9 @@ class BotWindow(QWidget):
         QShortcut('Ctrl+Shift+A', self).activated.connect(
             lambda: self.auto_scrol_page_btn.click() if self.auto_scrol_page_btn.isEnabled() else
             self.display_message_box("Auto Scroll button not enabled"))
+        QShortcut('Ctrl+Alt+S', self).activated.connect(
+            lambda: self.add_scroll_button.click() if self.add_scroll_button.isEnabled() else
+            self.display_message_box("Add Scroll button not enabled"))
 
     @staticmethod
     def get_websites_list():
@@ -352,6 +440,7 @@ class BotWindow(QWidget):
     #     return prefixes
 
     def goto_home_page(self):
+        self.timer.start(100)
         self.can_enable_next_button = True
         self.status_bar.showMessage("Wait Home Page is loading...", 3000)
         self.skip_button.setEnabled(True)
@@ -359,7 +448,6 @@ class BotWindow(QWidget):
         self.websites_index = self.websites_combobox.currentIndex()
         url = self.websites_combobox.currentText()
         url = "https://" + url
-        new_thread = Thread(target=self.automation.open_website, args=(url, self))
         new_thread = Thread(target=self.automation.open_website, args=(url, self))
         new_thread.start()
         # new_thread.join()
@@ -373,8 +461,11 @@ class BotWindow(QWidget):
         self.next_site_button.setEnabled(True)
         self.add_action_button.setEnabled(True)
         self.clear_action_button.setEnabled(True)
+        self.clear_last_action_button.setEnabled(True)
         self.play_action_button.setEnabled(True)
         self.auto_scrol_page_btn.setEnabled(True)
+        self.add_scroll_button.setEnabled(True)
+        self.add_pause_button.setEnabled(True)
 
     def goto_next_site(self):
         if self.websites_index >= len(self.urls_list):
@@ -454,6 +545,7 @@ class BotWindow(QWidget):
                 self.display_message_box("Pls check prefix or Run name entered properly")
         except Exception as e:
             print(f"Error: {e}")
+            self.add_action_time_log("Failed to get screenshot")
 
     @staticmethod
     def get_instructions():
@@ -463,9 +555,13 @@ class BotWindow(QWidget):
         return instructions
 
     def set_instruction(self):
-        self.prefixes_combobox.clear()
         if self.instructions:
             if 0 <= self.instructuns_index < len(self.instructions):
+                if self.instruction_time_count:
+                    self.add_action_time_log("delay before change instruction")
+                    self.timer_log.append(["", "Total Time", "%.1f" % self.instruction_time_count, "", "", ""])
+                    self.instruction_time_count = 0
+                self.prefixes_combobox.clear()
                 self.instruction_box.setPlainText(self.instructions[self.instructuns_index])
                 instruction = self.instructions[self.instructuns_index]
                 if instruction in self.config["instructions"]:
@@ -503,7 +599,8 @@ class BotWindow(QWidget):
             delay = self.screenshot_delay.value()
             self.status_bar.showMessage(f"Started video recording", 2000)
             new_thread = Thread(target=self.automation.record_screen,
-                                args=(self, prefix, suffix, second_instruction, delay))
+                                args=(self, prefix, suffix, second_instruction, delay,
+                                      self.hide_cursor_ck_box.isChecked()))
             new_thread.start()
             # new_thread.join()
             # self.setEnabled(True)
@@ -544,9 +641,16 @@ class BotWindow(QWidget):
         #         self.display_message_box(f"Added event {element}")
         # else:
         position = pyautogui.position()
-        self.non_scrollable_actions_list.append([position, self.add_click_check_box.isChecked()])
+        delay = self.play_action_delay.value()
+        self.non_scrollable_actions_list.append([position, self.add_click_check_box.isChecked(), delay, False])
         self.display_message_box(f"Added action")
         self.add_click_check_box.setChecked(False)
+        self.add_action_time_log("Add mouse action")
+
+    def add_scroll(self):
+        self.automation.page_scroll_down()
+        self.non_scrollable_actions_list.append((False, False, False, True))
+        self.add_action_time_log("scrolling")
 
     def play_actions(self):
         prefix = self.prefixes_combobox.currentText()
@@ -558,13 +662,19 @@ class BotWindow(QWidget):
                 def play_actions():
                     if self.record_actions_check_box.isChecked():
                         self.start_record_button.click()
-                    delay = self.play_action_delay.value()
-                    for position, click_or_not in self.non_scrollable_actions_list:
+                    for position, click_or_not, delay, scroll in self.non_scrollable_actions_list:
+                        if scroll:
+                            self.automation.page_scroll_down()
+                            continue
+                        if not position:
+                            time.sleep(delay)
+                            continue
                         pyautogui.moveTo(position[0], position[1], delay)
                         if click_or_not:
                             pyautogui.click()
                     time.sleep(1)
                     self.stop_record()
+                    self.add_action_time_log("play actions")
 
                 thread = Thread(target=play_actions)
                 thread.start()
@@ -624,6 +734,71 @@ class BotWindow(QWidget):
             thread.start()
         else:
             self.display_message_box("Pls check prefix or Run name entered properly")
+
+    def remove_last_action(self):
+        if self.non_scrollable_actions_list:
+            if self.non_scrollable_actions_list[-1][-1]:
+                self.automation.page_scroll_up()
+                self.non_scrollable_actions_list.pop()
+            else:
+                self.non_scrollable_actions_list.pop()
+            self.display_message_box("Cleared last action")
+        else:
+            self.display_message_box("Actions List is empty")
+
+    def update_timer(self):
+        self.timer_count += 0.1
+        self.total_time += 0.1
+        self.instruction_time_count += 0.1
+        self.timer_label.setText("%.1f Seconds" % self.timer_count)
+        self.total_time_label.setText("%.1f Seconds" % self.total_time)
+
+    def set_fullscreen(self):
+        if self.fullscreen_ck_box.isChecked():
+            self.automation.driver.fullscreen_window()
+        else:
+            self.automation.driver.maximize_window()
+
+    def add_pause(self):
+        delay = self.play_action_delay.value()
+        self.non_scrollable_actions_list.append([None, None, delay, False])
+        self.display_message_box(f"Added {delay} Seconds pause")
+        self.add_action_time_log("Pause")
+
+    def add_action_time_log(self, action):
+        time_stamp = time.ctime()
+        website = self.websites_combobox.currentText()
+        instruction = self.instruction_box.toPlainText()
+        log = time_stamp, action, "%.1f" % self.timer_count, website, instruction
+        self.timer_log.append(log)
+        self.timer_count = 0
+
+    def open_log_window(self):
+        self.log_table_window = LogPopupWindow(self)
+        self.log_table_window.show()
+        self.add_action_time_log("Delay before opening report")
+        self.timer_log.append(["", "Total Time", "%.1f" % self.instruction_time_count, "", "", ""])
+        self.log_table_window.create_log_table(self.timer_log)
+
+    def dump_time_log(self):
+        file = QFileDialog.getSaveFileName(self, "Save File", "report",
+                                           "All Files (*);;Log Files (*.log);;Txt Files (*.txt)")[0]
+        if file:
+            with open(file, "w") as f:
+                f.write("\t".join(log_report_titles)+"\n")
+                self.add_action_time_log("Delay before Log report")
+                self.timer_log.append(["", "Total Time", "%.1f" % self.instruction_time_count, "", "", ""])
+                for log in self.timer_log:
+                    f.write("\t".join(log)+"\n")
+                self.timer_log.pop()
+                self.timer_log.pop()
+
+    def closeEvent(self, event):
+        try:
+            self.log_table_window.close()
+        except:
+            pass
+        event.accept()
 
 
 if __name__ == "__main__":
